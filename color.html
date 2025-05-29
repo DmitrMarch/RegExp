@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка цвета</title>
+    <script src="validateColor.js"></script>
+</head>
+<body style="font-family: sans-serif, serif;" id="body">
+    <form style="margin: auto; width: 350px; height: 300px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px;" 
+        id="colorForm">
+        <input style="width: 300px; height: 30px; border-radius: 10px; padding-left: 10px; 
+            padding-right: 10px; margin: auto; margin-bottom: 30px; margin-top: 50px;" 
+            placeholder="цвет..." id="colorInp">
+        <h3>
+            Ограничения на цвет:
+        </h6>
+        <ol style="text-align: left;" id="restrictions">
+            <li>
+                rgb(r, g, b)
+            </li>
+            <li>
+                #rrggbb или #rgb
+            </li>
+            <li>
+                hsl(h, s, l)
+            </li>
+        </ol>
+    </form>
+    <script>
+        const RED_COLOR = "#EE204D";
+        const GREEN_COLOR = "#44944A";
+
+        let color_inp = colorForm.colorInp;
+        color_inp.addEventListener("input", () => {
+
+            let restrictions = document.getElementById("restrictions").children;
+            
+            if (color_inp.value == "") {
+
+                color_inp.style.background = "";
+                body.style.background = "";
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.color = "";
+                }
+
+                return;
+            }
+            
+            let color = color_inp.value;
+            let color_status = getColorStatus(color);
+
+            if (color_status.reduce((sum, a) => sum + a, 0) == 1) {
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    let text_color = RED_COLOR;
+
+                    if (color_status[i]) {
+                        
+                        text_color = GREEN_COLOR;
+                        color_inp.style.background = GREEN_COLOR;
+                        body.style.background = color;
+                    }
+
+                    restrictions[i].style.color = text_color;
+                }
+
+                return;
+            }
+
+            color_inp.style.background = RED_COLOR;
+            body.style.background = "";
+
+            for (let i = 0; i < restrictions.length; ++i) {
+
+                restrictions[i].style.color = RED_COLOR;
+            }
+        })
+    </script>
+</body>
+</html>
