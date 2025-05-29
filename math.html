@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проверка мат выражения</title>
+    <title>Анализ мат выражения</title>
     <script src="validateMath.js"></script>
 </head>
 <body style="font-family: sans-serif, serif;">
-    <form style="margin: auto; width: 550px; height: 450px; text-align: center; 
-        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px;"
+    <form style="margin: auto; width: 550px; min-height: 450px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px; padding-bottom: 40px;"
         id="mathForm">
         <input style="width: 300px; height: 30px; border-radius: 10px; padding-left: 10px; 
             padding-right: 10px; margin-bottom: 30px; margin-top: 50px;" 
@@ -50,6 +50,8 @@
         math_inp.addEventListener("input", () => {
 
             let restrictions = document.getElementById("restrictions").children;
+            let result = document.getElementById("result");
+            result.innerHTML = "<h1>Токены:</h1>";
             
             if (math_inp.value == "") {
 
@@ -66,7 +68,10 @@
             let math = math_inp.value;
             let math_status = getMathStatus(math);
 
-            //что-то делать с math_status
+            for (let i = 0; i < math_status.length; ++i) {
+
+                result.innerHTML += JSON.stringify(math_status[i], null, 2) + "<br>";
+            }
         })
     </script>
 </body>
