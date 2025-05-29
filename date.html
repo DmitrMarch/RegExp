@@ -76,18 +76,6 @@
             let date = date_inp.value;
             let date_status = getDateStatus(date);
 
-            if (date_status.reduce((sum, a) => sum + a, 0) == 7) {
-
-                date_inp.style.background = GREEN_COLOR;
-
-                for (let i = 0; i < restrictions.length; ++i) {
-
-                    restrictions[i].style.color = GREEN_COLOR;
-                }
-
-                return;
-            }
-
             date_inp.style.background = RED_COLOR;
 
             for (let i = 0; i < restrictions.length; ++i) {

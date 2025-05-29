@@ -40,6 +40,7 @@
                 круглые скобки (тип left_parenthesis и right_parenthesis)
             </li>
         </ol>
+        <div id="result"></div>
     </form>
     <script>
         const RED_COLOR = "#EE204D";
@@ -65,28 +66,7 @@
             let math = math_inp.value;
             let math_status = getMathStatus(math);
 
-            if (math_status.reduce((sum, a) => sum + a, 0) == 7) {
-
-                math_inp.style.background = GREEN_COLOR;
-
-                for (let i = 0; i < restrictions.length; ++i) {
-
-                    restrictions[i].style.color = GREEN_COLOR;
-                }
-
-                return;
-            }
-
-            math_inp.style.background = RED_COLOR;
-
-            for (let i = 0; i < restrictions.length; ++i) {
-
-                let text_color = RED_COLOR;
-
-                if (math_status[i]) text_color = GREEN_COLOR;
-
-                restrictions[i].style.color = text_color;
-            }
+            //что-то делать с math_status
         })
     </script>
 </body>
