@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка даты</title>
+    <script src="validateDate.js"></script>
+</head>
+<body style="font-family: sans-serif, serif;">
+    <form style="margin: auto; width: 550px; height: 480px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px;"
+        id="dateForm">
+        <input style="width: 300px; height: 30px; border-radius: 10px; padding-left: 10px; 
+            padding-right: 10px; margin-bottom: 30px; margin-top: 50px;" 
+            placeholder="дата..." id="dateInp">
+        <h3>
+            Ограничения на дату:
+        </h6>
+        <ol style="text-align: left; width: 490px;" id="restrictions">
+            <li>
+                день. месяц.год (14.09.2023, 5.02.1995, 01.4.2012)
+            </li>
+            <li>
+                день/месяц/год (14/09/2023, 5/02/1995, 01/4/2012)
+            </li>
+            <li>
+                день-месяц-год (14-09-2023, 5-02-1995, 01-4-2012)
+            </li>
+            <li>
+                год.месяц.день (2023.09.14, 1995.02.5, 2012.4.01)
+            </li>
+            <li>
+                год/месяц/день (2023/09/14, 1995/02/5, 2012/4/01)
+            </li>
+            <li>
+                год-месяц-день (2023-09-14, 1995-02-5, 2012-4-01)
+            </li>
+            <li>
+                день месяц_rus год (14 сентября 2023, 5 февраля 1995, 01 апреля 2012)
+            </li>
+            <li>
+                Месяц_eng день, год (September 14, 2023, February 5, 1995, April 01, 2012)
+            </li>
+            <li>
+                Mec_eng день, год (Sep 14, 2023, Feb 5, 1995, Apr 01, 2012)
+            </li>
+            <li>
+                год, Месяц_eng день (2023, September 14, 1995, February 5, 2012, April 01)
+            </li>
+            <li>
+                год, Mec_eng день (2023, Sep 14, 1995, Feb 5, 2012, Apr 01)
+            </li>
+        </ol>
+    </form>
+    <script>
+        const RED_COLOR = "#EE204D";
+        const GREEN_COLOR = "#44944A";
+
+        let date_inp = dateForm.dateInp;
+        date_inp.addEventListener("input", () => {
+
+            let restrictions = document.getElementById("restrictions").children;
+            
+            if (date_inp.value == "") {
+
+                date_inp.style.background = "";
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.color = "";
+                }
+
+                return;
+            }
+            
+            let date = date_inp.value;
+            let date_status = getDateStatus(date);
+
+            if (date_status.reduce((sum, a) => sum + a, 0) == 7) {
+
+                date_inp.style.background = GREEN_COLOR;
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.color = GREEN_COLOR;
+                }
+
+                return;
+            }
+
+            date_inp.style.background = RED_COLOR;
+
+            for (let i = 0; i < restrictions.length; ++i) {
+
+                let text_color = RED_COLOR;
+
+                if (date_status[i]) text_color = GREEN_COLOR;
+
+                restrictions[i].style.color = text_color;
+            }
+        })
+    </script>
+</body>
+</html>

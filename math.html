@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка мат выражения</title>
+    <script src="validateMath.js"></script>
+</head>
+<body style="font-family: sans-serif, serif;">
+    <form style="margin: auto; width: 550px; height: 450px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px;"
+        id="mathForm">
+        <input style="width: 300px; height: 30px; border-radius: 10px; padding-left: 10px; 
+            padding-right: 10px; margin-bottom: 30px; margin-top: 50px;" 
+            placeholder="выражение..." id="mathInp">
+        <h3>
+            Ограничения на мат выражение:
+        </h6>
+        <ol style="text-align: left; width: 490px;" id="restrictions">
+            <li>
+                переменная (тип variable) - строка из латинских букв, цифр и символа нижнего 
+                подчёркивания (_), начинающаяся не с цифры: a, var123, some_var_name
+            </li>
+            <li>
+                число (тип number) - строка, являющаяся целым или вещественным числом в общей 
+                форме без знака (в качестве разделителя целой и дробной части - точка): 
+                42, 123456789, 23.567, 0.6734537
+            </li>
+            <li>
+                константа (тип constant) - строка из списка: pi, e, sqrt2, ln2, ln10
+            </li>
+            <li>
+                функция (тип function) - строka из списkа: sin, cos, tg, ctg, tan, cot, sinh, 
+                cosh, th, cth, tanh, coth, In, Ig, log, exp, sqrt, cbrt, abs, sign
+            </li>
+            <li>
+                операция (тип operator) - строка из списка ^, *, /, -, +
+            </li>
+            <li>
+                круглые скобки (тип left_parenthesis и right_parenthesis)
+            </li>
+        </ol>
+    </form>
+    <script>
+        const RED_COLOR = "#EE204D";
+        const GREEN_COLOR = "#44944A";
+
+        let math_inp = mathForm.mathInp;
+        math_inp.addEventListener("input", () => {
+
+            let restrictions = document.getElementById("restrictions").children;
+            
+            if (math_inp.value == "") {
+
+                math_inp.style.background = "";
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.color = "";
+                }
+
+                return;
+            }
+            
+            let math = math_inp.value;
+            let math_status = getMathStatus(math);
+
+            if (math_status.reduce((sum, a) => sum + a, 0) == 7) {
+
+                math_inp.style.background = GREEN_COLOR;
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.color = GREEN_COLOR;
+                }
+
+                return;
+            }
+
+            math_inp.style.background = RED_COLOR;
+
+            for (let i = 0; i < restrictions.length; ++i) {
+
+                let text_color = RED_COLOR;
+
+                if (math_status[i]) text_color = GREEN_COLOR;
+
+                restrictions[i].style.color = text_color;
+            }
+        })
+    </script>
+</body>
+</html>
