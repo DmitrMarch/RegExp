@@ -1,6 +1,7 @@
 function getDateStatus(date) {
 
     date = date.trim();
+    let monthLen = 0;
 
     const monthsRus = [
         "января", "февраля", "марта", "апреля", "мая", "июня",
@@ -17,14 +18,16 @@ function getDateStatus(date) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
 
+    const monthLens = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
     function isInt(val) {
         
         return !isNaN(val) && Number.isInteger(+val);
     }
 
-    function validDay(day) {
+    function validDay(day, monthLen) {
         
-        return isInt(day) && +day >= 1 && +day <= 31;
+        return isInt(day) && +day >= 1 && +day <= monthLen;
     }
 
     function validMonth(month) {
@@ -34,7 +37,52 @@ function getDateStatus(date) {
 
     function validYear(year) {
         
-        return isInt(year) && year.length === 4;
+        return isInt(year) && +year >= 100;
+    }
+
+    function leapYear(year) {
+
+        let leap = false;
+        year = +year;
+
+        if (year % 4 === 0) {
+
+            if (year % 100 === 0) {
+
+                if (year % 400 === 0) {
+
+                    leap = true;
+                }
+            }
+            else {
+
+                leap = true;
+            }
+        }
+
+        return leap
+    }
+
+    function getMonthLen(m, y, monthList=[]) {
+
+        let monthLen = 0;
+
+        if (monthList.length !== 0) {
+
+            m = monthList.indexOf(m) + 1;
+        }
+
+        if (validMonth(m)) {
+
+            monthLen = monthLens[+m - 1];
+
+            if (validYear(y) && leapYear(y) && +m === 2) {
+
+                monthLen = 29
+            }
+        }
+
+        return monthLen;
     }
 
     function checkDMY(str, sep) {
@@ -42,7 +90,10 @@ function getDateStatus(date) {
         const parts = str.split(sep);
         if (parts.length !== 3) return false;
         let [d, m, y] = parts.map(p => p.trim());
-        return validDay(d) && validMonth(m) && validYear(y);
+
+        monthLen = getMonthLen(m, y);
+
+        return validDay(d, monthLen) && validMonth(m) && validYear(y);
     }
 
     function checkYMD(str, sep) {
@@ -50,7 +101,10 @@ function getDateStatus(date) {
         const parts = str.split(sep);
         if (parts.length !== 3) return false;
         let [y, m, d] = parts.map(p => p.trim());
-        return validYear(y) && validMonth(m) && validDay(d);
+
+        monthLen = getMonthLen(m, y);
+
+        return validYear(y) && validMonth(m) && validDay(d, monthLen);
     }
 
     function checkDayMonthRusYear(str) {
@@ -58,7 +112,10 @@ function getDateStatus(date) {
         const parts = str.split(" ");
         if (parts.length !== 3) return false;
         let [d, m, y] = parts;
-        return validDay(d) && monthsRus.includes(m.toLowerCase()) && validYear(y);
+
+        monthLen = getMonthLen(m, y, monthsRus);
+
+        return validDay(d, monthLen) && monthsRus.includes(m) && validYear(y);
     }
 
     function checkMonthEngDayYear(str, monthList) {
@@ -66,12 +123,15 @@ function getDateStatus(date) {
         const parts = str.split(",").map(p => p.trim());
         if (parts.length !== 2) return false;
 
-        const [monthDay, year] = parts;
+        const [monthDay, y] = parts;
         const sub = monthDay.split(" ");
         if (sub.length !== 2) return false;
 
-        const [month, day] = sub;
-        return monthList.includes(month) && validDay(day) && validYear(year);
+        const [m, d] = sub;
+
+        monthLen = getMonthLen(m, y, monthList);
+
+        return monthList.includes(m) && validDay(d, monthLen) && validYear(y);
     }
 
     function checkYearMonthEngDay(str, monthList) {
@@ -79,12 +139,15 @@ function getDateStatus(date) {
         const parts = str.split(",").map(p => p.trim());
         if (parts.length !== 2) return false;
 
-        const [year, monthDay] = parts;
+        const [y, monthDay] = parts;
         const sub = monthDay.split(" ");
         if (sub.length !== 2) return false;
 
-        const [month, day] = sub;
-        return validYear(year) && monthList.includes(month) && validDay(day);
+        const [m, d] = sub;
+
+        monthLen = getMonthLen(m, y, monthList);
+        
+        return validYear(y) && monthList.includes(m) && validDay(d, monthLen);
     }
 
     return [
