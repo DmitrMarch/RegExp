@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Разбиение текста</title>
+    <script src="splitText.js"></script>
+</head>
+<body style="font-family: sans-serif, serif;">
+    <form style="margin: auto; width: 50%; min-height: 150px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px; padding-bottom: 40px;"
+        id="textForm">
+        <textarea style="width: 90%; min-height: 100px; border-radius: 10px; padding-left: 10px; 
+            padding-right: 10px; margin-bottom: 30px; margin-top: 50px; resize: vertical;" 
+            placeholder="текст..." id="textArea"></textarea>
+        <div id="result"></div>
+    </form>
+    <script>
+        const RED_COLOR = "#EE204D";
+        const GREEN_COLOR = "#44944A";
+
+        let text_inp = textForm.textInp;
+        text_inp.addEventListener("input", () => {
+
+            let result = document.getElementById("result");
+            result.innerHTML = "<h1>Разбитый текст:</h1>";
+            
+            if (text_inp.value == "") {
+
+                text_inp.style.background = "";
+                result.innerHTML = "";
+                return;
+            }
+            
+            let text = text_inp.value;
+            let splited_text = splitText(text);
+
+            for (let i = 0; i < splited_text.length; ++i) {
+
+                result.innerHTML += JSON.stringify(splited_text[i], null, 2) + "<br>";
+            }
+        })
+    </script>
+</body>
+</html>
