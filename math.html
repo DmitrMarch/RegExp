@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
             placeholder="выражение..." id="mathInp">
         <h3>
             Ограничения на мат выражение:
-        </h6>
-        <ol style="text-align: left; width: 490px;" id="restrictions">
+        </h3>
+        <ol style="text-align: left; width: 490px;">
             <li>
                 переменная (тип variable) - строка из латинских букв, цифр и символа нижнего 
                 подчёркивания (_), начинающаяся не с цифры: a, var123, some_var_name
@@ -56,12 +56,6 @@
             if (math_inp.value == "") {
 
                 math_inp.style.background = "";
-
-                for (let i = 0; i < restrictions.length; ++i) {
-
-                    restrictions[i].style.color = "";
-                }
-
                 return;
             }
             
