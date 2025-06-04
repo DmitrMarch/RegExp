@@ -7,7 +7,7 @@ function getParenthesesStatus(parentheses) {
         ']': '['
     };
 
-    for (const char of str) {
+    for (const char of parentheses) {
 
         if (['(', '{', '['].includes(char)) {
 
