@@ -1,6 +1,30 @@
 function getParenthesesStatus(parentheses) {
     
-    let template = /a/;
+    const stack = [];
+    const pairs = {
+        ')': '(',
+        '}': '{',
+        ']': '['
+    };
 
-    return;
+    for (const char of str) {
+
+        if (['(', '{', '['].includes(char)) {
+
+            stack.push(char);
+        } 
+        else if ([')', '}', ']'].includes(char)) {
+
+            if (stack.pop() !== pairs[char]) {
+
+                return false;
+            }
+        }
+        else {
+
+            return false;
+        }
+    }
+
+    return stack.length === 0;
 }
