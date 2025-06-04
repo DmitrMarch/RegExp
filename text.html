@@ -7,39 +7,69 @@
     <script src="splitText.js"></script>
 </head>
 <body style="font-family: sans-serif, serif;">
-    <form style="margin: auto; width: 50%; min-height: 150px; text-align: center; 
+    <form style="margin: auto; width: 50%; min-height: 400px;
         margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px; padding-bottom: 40px;"
         id="textForm">
-        <textarea style="width: 90%; min-height: 100px; border-radius: 10px; padding-left: 10px; 
-            padding-right: 10px; margin-bottom: 30px; margin-top: 50px; resize: vertical;" 
-            placeholder="текст..." id="textArea"></textarea>
-        <div id="result"></div>
+        <h3 style="padding-top: 30px; text-align: center;">Введите текст для разбиения</h3>
+        <div style="width: 90%; min-height: 400px; outline: none; border: 2px solid black; 
+            border-radius: 10px; padding-left: 10px; padding-right: 10px; margin-bottom: 10px; 
+            margin: auto;" 
+            id="textBox" contenteditable="true" spellcheck="false"></div>
     </form>
     <script>
-        const RED_COLOR = "#EE204D";
-        const GREEN_COLOR = "#44944A";
+        const COLORS = [
+            "#40E0D0", "#FF7F50", "#FFDB58", "#FF00FF", "#E6E6FA",
+            "#BCB88A", "#CC5500", "#008080", "#FFCBDB", "#50C878",
+            "#FFD700", "#E30B5C", "#98FF98", "#6A5ACD", "#FFCB9A",
+            "#32CD32", "#E97451", "#87CEEB", "#8A2BE2", "#FFDB58"
+        ];
+        let text_box = document.getElementById("textBox");
 
-        let text_inp = textForm.textInp;
-        text_inp.addEventListener("input", () => {
+        text_box.addEventListener("input", () => {
 
-            let result = document.getElementById("result");
-            result.innerHTML = "<h1>Разбитый текст:</h1>";
+            let text = text_box.innerText;
             
-            if (text_inp.value == "") {
+            if (text == "") {
 
-                text_inp.style.background = "";
-                result.innerHTML = "";
+                text_box.innerHTML = "";
                 return;
             }
-            
-            let text = text_inp.value;
+
             let splited_text = splitText(text);
+
+            if (splited_text.length == 0) return;
+
+            let colored_html = "";
+            let last_index = 0;
 
             for (let i = 0; i < splited_text.length; ++i) {
 
-                result.innerHTML += JSON.stringify(splited_text[i], null, 2) + "<br>";
+                let [start_pos, end_pos] = splited_text[i].indices[1];
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                const fragment = text.slice(start_pos, end_pos);
+                
+                colored_html += text.slice(last_index, start_pos);
+                colored_html += `<span style="background-color: ${color}">${fragment}</span>`;
+                last_index = end_pos;
             }
-        })
+
+            colored_html += text.slice(last_index);
+            text_box.innerHTML = colored_html;
+
+            moveCaretToEnd(text_box);
+        });
+
+        function moveCaretToEnd(element) {
+            
+            let range = document.createRange();
+            let selection = window.getSelection();
+
+            range.selectNodeContents(element);
+            range.collapse(false);
+
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
     </script>
 </body>
 </html>

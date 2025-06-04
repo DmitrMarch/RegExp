@@ -1,4 +1,6 @@
-function splitText() {
+function splitText(text) {
 
-    return;
+    const regex = /(?<sentence>[^.!?]*?[А-ЯA-Z][^.!?]*?[.!?])(?:\s+|$)/gud;
+
+    return [...text.matchAll(regex)];
 }
