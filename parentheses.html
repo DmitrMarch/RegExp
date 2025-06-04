@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка скобок</title>
+    <script src="validateParentheses.js"></script>
+</head>
+<body style="font-family: sans-serif, serif;" id="body">
+    <form style="margin: auto; width: 370px; max-height: 450px; text-align: center; 
+        margin-top: 100px; border-radius: 10px; box-shadow: 1px 1px 1px 1px;" 
+        id="parenthesesForm">
+        <input style="width: 300px; height: 30px; border-radius: 10px; padding-left: 10px; 
+            padding-right: 10px; margin: auto; margin-bottom: 30px; margin-top: 50px;" 
+            placeholder="скобочное выражение..." id="parenthesesInp">
+        <h3 style="text-align: left; padding-left: 10px;">
+            Примеры корректных выражений:
+        </h3>
+        <ol style="text-align: left;" id="restrictions">
+            <li>
+                ()
+            </li>
+            <li>
+                {[]}
+            </li>
+            <li>
+                {[{[()]}]}
+            </li>
+        </ol>
+        <h3 style="text-align: left; padding-left: 10px;">
+            Примеры некорректных выражений:
+        </h3>
+        <ol style="text-align: left; padding-bottom: 50px;" id="restrictions">
+            <li>
+                &#41;
+            </li>
+            <li>
+                &#40;&#125;[]
+            </li>
+            <li>
+                &#123;&#123;[&#123;]&#41;&#40;&#40;&#125;&#123;
+            </li>
+        </ol>
+    </form>
+    <script>
+        const RED_COLOR = "#EE204D";
+        const GREEN_COLOR = "#44944A";
+
+        let parentheses_inp = parenthesesForm.parenthesesInp;
+        parentheses_inp.addEventListener("input", () => {
+
+            let restrictions = document.getElementById("restrictions").children;
+            
+            if (parentheses_inp.value == "") {
+
+                parentheses_inp.style.background = "";
+                body.style.background = "";
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    restrictions[i].style.parentheses = "";
+                }
+
+                return;
+            }
+            
+            let parentheses = parentheses_inp.value;
+            let parentheses_status = getParenthesesStatus(parentheses);
+
+            if (parentheses_status) {
+
+                for (let i = 0; i < restrictions.length; ++i) {
+
+                    let text_parentheses = RED_COLOR;
+
+                    if (parentheses_status[i]) {
+                        
+                        text_parentheses = GREEN_COLOR;
+                        parentheses_inp.style.background = GREEN_COLOR;
+                        body.style.background = parentheses;
+                    }
+
+                    restrictions[i].style.parentheses = text_parentheses;
+                }
+
+                return;
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+function getParenthesesStatus(parentheses) {
+    
+    return;
+}
